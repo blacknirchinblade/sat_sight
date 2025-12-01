@@ -1,0 +1,180 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+PKGINFO
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+genaienv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Data files (exclude from git)
+data/
+*.npy
+*.faiss
+*.jsonl
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+comprehensive_100_tests.log
+evaluation*.log
+user_test_output.log
+
+# Models (large files)
+models/
+*.bin
+*.pt
+*.pth
+*.onnx
+*.h5
+*.safetensors
+*.gguf
+
+# Vector stores
+vector_stores/
+chroma_store/
+chroma_db/
+faiss_index/
+
+# Images
+images/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tif
+*.tiff
+
+# Documents (exclude from repo)
+docs/
+text_docs/
+*.pdf
+*.docx
+*.tex
+*.aux
+*.out
+*.toc
+*.synctex.gz
+
+# Metadata
+metadata/
+
+# Test outputs
+test_outputs/
+evaluation_results/
+
+# Scripts (you mentioned not to upload)
+scripts/
+
+# Archives
+_archive_*/
+initial-sat-sight/
+backups/
+*.zip
+*.tar.gz
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+htmlcov/
+.tox/
+.hypothesis/
+
+# MyPy
+.mypy_cache/
+.dmyp y.json
+dmypy.json
+
+# Temporary
+*.tmp
+*.bak
+temp/
+tmp/
+
+# Shell scripts (optional)
+*.sh
+
+# Summary/documentation markdown files (keep only main README)
+CLEANUP_SUMMARY.md
+CONTRIBUTING.md
+COORDINATE_STRATEGY.md
+CRITICAL_FIX_RESULTS.md
+DATA_SOURCES.md
+DEPLOYMENT_CHECKLIST.md
+ENHANCED_UI_FEATURES.md
+FINAL_CLEANUP_REPORT.md
+GEOGRAPHIC_DATASETS.md
+IMPLEMENTATION_SUMMARY_MCP_MEMORY.md
+IMPROVEMENTS_SUMMARY.md
+MCP_MEMORY_GUIDE.md
+PROGRESS_SUMMARY.py
+PROJECT_UPDATE_SUMMARY.md
+QUICK_REFERENCE.md
+README.old.md
+README_PROFESSIONAL.md
+TESTING_GUIDE.md
+TEST_RESULTS.md
+UI_THINKING_FEATURE.md
+USER_TESTING_RESULTS.md
+
+# Test files
+test_*.py
+*_test.py
+
+# Evaluation
+evaluation/
