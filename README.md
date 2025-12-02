@@ -3,7 +3,7 @@
 <!-- Project Banner - Add your image here -->
 ![Sat-Sight Banner](docs/images/banner.png)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![LangGraph](https://img.shields.io/badge/LangGraph-Multi--Agent-green.svg)](https://github.com/langchain-ai/langgraph)
 
@@ -111,7 +111,7 @@ The web interface will be available at `http://localhost:8501`
 - "Compare agricultural land use in India vs. USA"
 - "What weather patterns affect California wildfires?"
 
-### API Usage
+### Workflow Usage
 
 ```python
 from sat_sight.core.workflow import create_workflow
@@ -203,38 +203,6 @@ sat_sight/
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions to Sat-Sight! Please follow these guidelines:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Setup
-
-```bash
-# Install development dependencies
-pip install -r requirements-dev.txt
-
-# Run tests
-pytest tests/
-
-# Run linting
-flake8 sat_sight/
-black sat_sight/
-```
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
 ## 👥 Contributors
 
 This project was developed at the **Indian Institute of Science (IISc), Bangalore**.
@@ -263,10 +231,10 @@ For general inquiries: [ganeshnaik214@gmail.com](mailto:ganeshnaik214@gmail.com)
 For issues, questions, or suggestions:
 - Open an issue on [GitHub](https://github.com/blacknirchinblade/sat_sight/issues)
 - Contact the development team via email
-- Check our [documentation](docs/) for detailed guides
+- Check our Report for detailed guides
 
 ---
 
-**Note**: Additional documentation and research papers will be added to the repository soon.
+**Note**: Additional documentation will be added to the repository soon.
 
 *Built with ❤️ at IISc Bangalore*
