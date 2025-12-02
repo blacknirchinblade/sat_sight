@@ -1,7 +1,7 @@
 # Sat-Sight: Multi-Agent Satellite Imagery Analysis System
 
 <!-- Project Banner - Add your image here -->
-![Sat-Sight Banner](docs/images/banner.png)
+![Sat-Sight Banner](docs/images/demo.png)
 
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
