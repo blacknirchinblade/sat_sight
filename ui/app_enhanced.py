@@ -1,23 +1,34 @@
 """
 Enhanced Sat-Sight UI with Multiple Chat Sessions
-Features: Create/Delete chats, Persist history, Resume conversations
 """
 
 import streamlit as st
 import os
 import sys
+import logging
 from pathlib import Path
 import tempfile
 from datetime import datetime
 import uuid
 
+logger = logging.getLogger(__name__)
+
 # Setup path - sat_sight is a package, so we need its parent directory
 project_root = Path(__file__).resolve().parent.parent  # sat_sight directory
 parent_dir = project_root.parent  # GenAi_Project directory
+sys.path.insert(0, str(parent_dir))  # Add GenAi_Project to path
+
+# Ensure project root/parent is on sys.path so "import sat_sight" works when run from anywhere
+if str(parent_dir) not in sys.path:
+    sys.path.insert(0, str(parent_dir))
+# Optionally change cwd to project root to make relative data paths work consistently
+os.chdir(project_root)
+
 
 from sat_sight.core.workflow import run_workflow
 from sat_sight.ui.components.thinking_display import render_thinking_process
 from sat_sight.ui.chat_manager import ChatDatabase
+from sat_sight.memory.short_term import ShortTermMemory
 
 def generate_smart_title(query):
     """
@@ -108,8 +119,7 @@ def check_if_satellite_image(image_path, query=""):
         return False
         
     except Exception as e:
-        print(f"Error checking satellite image: {e}")
-        # Default to True if we can't check (assume it's satellite)
+        logger.error(f"Error checking satellite image: {e}")
         return True
 
 st.set_page_config(
@@ -172,6 +182,23 @@ if "current_session_id" not in st.session_state:
 
 if "messages_loaded" not in st.session_state:
     st.session_state.messages_loaded = False
+
+# Initialize short-term memory for this session
+if "session_memory" not in st.session_state:
+    st.session_state.session_memory = {}
+
+# Get or create memory for current session
+if st.session_state.current_session_id not in st.session_state.session_memory:
+    st.session_state.session_memory[st.session_state.current_session_id] = ShortTermMemory(max_turns=10)
+    # Load existing messages into memory
+    existing_messages = chat_db.get_session_messages(st.session_state.current_session_id)
+    memory = st.session_state.session_memory[st.session_state.current_session_id]
+    for msg in existing_messages[-10:]:  # Last 10 messages
+        memory.add_turn(
+            role=msg['role'],
+            content=msg['content'],
+            metadata={'session_id': st.session_state.current_session_id}
+        )
 
 # Custom CSS - Professional colors for both light and dark modes
 st.markdown("""
@@ -311,6 +338,20 @@ with st.sidebar:
                         st.session_state.current_session_id = session['session_id']
                         st.query_params["session_id"] = session['session_id']  # Update query param for persistence
                         st.session_state.messages_loaded = False
+                        
+                        # Initialize memory for switched session if not exists
+                        if session['session_id'] not in st.session_state.session_memory:
+                            st.session_state.session_memory[session['session_id']] = ShortTermMemory(max_turns=10)
+                            # Load existing messages into memory
+                            existing_messages = chat_db.get_session_messages(session['session_id'])
+                            memory = st.session_state.session_memory[session['session_id']]
+                            for msg in existing_messages[-10:]:
+                                memory.add_turn(
+                                    role=msg['role'],
+                                    content=msg['content'],
+                                    metadata={'session_id': session['session_id']}
+                                )
+                        
                         st.rerun()
                 
                 with col_delete:
@@ -349,6 +390,9 @@ if current_session:
     with col_clear:
         if st.button("🗑️ Clear", help="Clear all messages"):
             chat_db.clear_session_messages(st.session_state.current_session_id)
+            # Clear session memory too
+            if st.session_state.current_session_id in st.session_state.session_memory:
+                st.session_state.session_memory[st.session_state.current_session_id] = ShortTermMemory(max_turns=10)
             st.session_state.messages_loaded = False
             st.rerun()
     
@@ -531,6 +575,15 @@ if current_session:
             user_metadata if user_metadata else None
         )
         
+        # Add user message to session memory
+        session_memory = st.session_state.session_memory.get(st.session_state.current_session_id)
+        if session_memory:
+            session_memory.add_turn(
+                role="user",
+                content=prompt,
+                metadata={'session_id': st.session_state.current_session_id}
+            )
+        
         # Process query
         with st.spinner("🔄 Analyzing..."):
             try:
@@ -556,6 +609,16 @@ if current_session:
                             response,
                             {'uploaded_image_type': 'non_satellite'}
                         )
+                        
+                        # Add to session memory
+                        session_memory = st.session_state.session_memory.get(st.session_state.current_session_id)
+                        if session_memory:
+                            session_memory.add_turn(
+                                role="assistant",
+                                content=response,
+                                metadata={'uploaded_image_type': 'non_satellite'}
+                            )
+                        
                         st.session_state.messages_loaded = False
                         st.rerun()
                     else:
@@ -597,6 +660,18 @@ if current_session:
                     response,
                     metadata
                 )
+                
+                # Add assistant response to session memory
+                session_memory = st.session_state.session_memory.get(st.session_state.current_session_id)
+                if session_memory:
+                    session_memory.add_turn(
+                        role="assistant",
+                        content=response,
+                        metadata={
+                            'session_id': st.session_state.current_session_id,
+                            'agents_used': metadata.get('agents', [])
+                        }
+                    )
                 
                 # Update session title if first message
                 if current_session['message_count'] == 0:

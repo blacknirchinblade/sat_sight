@@ -6,7 +6,7 @@ from sat_sight.core.config import DEBUG
 
 logger = logging.getLogger(__name__)
 
-search_tool = DuckDuckGoSearchTool(max_results=3) # Configure max results
+search_tool = DuckDuckGoSearchTool(max_results=3) 
 
 def search_node(state: AgentState) -> Dict[str, Any]:
     """
@@ -39,7 +39,7 @@ def search_node(state: AgentState) -> Dict[str, Any]:
     updates = {
         "current_agent": "search_agent",
         "web_snippets": retrieved_snippets, # <-- Use the correct key name from AgentState
-        "next_agent": "reasoning_agent"
+        "next_agent": "memory_agent"  # Route to memory before reasoning
     }
 
     if DEBUG:

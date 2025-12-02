@@ -63,7 +63,7 @@ def wikipedia_node(state: AgentState) -> Dict[str, Any]:
 
     multi_source_needed = state.get("multi_source_needed", False)
     required_sources = state.get("required_sources", [])
-    next_agent_decided = "reasoning_agent"
+    next_agent_decided = "memory_agent"
     
     if multi_source_needed and required_sources:
         completed_sources = state.get("completed_sources", [])
@@ -80,7 +80,7 @@ def wikipedia_node(state: AgentState) -> Dict[str, Any]:
                 next_agent_decided = "tavily_search_agent"
             logger.info(f"Wikipedia Agent: Multi-source routing to {next_agent_decided}")
         else:
-            logger.info(f"Wikipedia Agent: All sources complete, routing to reasoning_agent")
+            logger.info(f"Wikipedia Agent: All sources complete, routing to memory_agent")
         
         updates = {
             "current_agent": "wikipedia_agent",
@@ -94,7 +94,7 @@ def wikipedia_node(state: AgentState) -> Dict[str, Any]:
             "current_agent": "wikipedia_agent",
             "wiki_content": wiki_content,
             "wiki_source": wiki_source_title,
-            "next_agent": "reasoning_agent"
+            "next_agent": "memory_agent"
         }
 
     if DEBUG:

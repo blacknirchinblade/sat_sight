@@ -146,8 +146,9 @@ dmypy.json
 temp/
 tmp/
 
-# Shell scripts (optional)
-*.sh
+# Shell scripts (keep setup and run scripts)
+quick_test.sh
+test_*.sh
 
 # Summary/documentation markdown files (keep only main README)
 CLEANUP_SUMMARY.md
@@ -158,8 +159,11 @@ DATA_SOURCES.md
 DEPLOYMENT_CHECKLIST.md
 ENHANCED_UI_FEATURES.md
 FINAL_CLEANUP_REPORT.md
+GENAI_ALIGNMENT_AND_DATASETS.md
 GEOGRAPHIC_DATASETS.md
+GITHUB_UPLOAD.md
 IMPLEMENTATION_SUMMARY_MCP_MEMORY.md
+IMPORT_FIX_GUIDE.md
 IMPROVEMENTS_SUMMARY.md
 MCP_MEMORY_GUIDE.md
 PROGRESS_SUMMARY.py
@@ -167,14 +171,32 @@ PROJECT_UPDATE_SUMMARY.md
 QUICK_REFERENCE.md
 README.old.md
 README_PROFESSIONAL.md
+README_GITHUB.md
+RESEARCH_IDEAS.md
 TESTING_GUIDE.md
 TEST_RESULTS.md
 UI_THINKING_FEATURE.md
 USER_TESTING_RESULTS.md
+CLEANUP_AND_GITHUB_SUMMARY.md
 
 # Test files
 test_*.py
 *_test.py
+quick_test.py
 
 # Evaluation
 evaluation/
+
+# Backup directories
+*_backup_*/
+sat_sight_backup_*/
+
+# MCP directory (separate project)
+../sat_sight_mcp/
+
+# Project planning
+PROJECT_TRANSFORMATION_PLAN.md
+create_structure.sh
+
+# Installation guides (keep in repo for reference - comment out to include)
+# GIT_UPLOAD_INSTRUCTIONS.md

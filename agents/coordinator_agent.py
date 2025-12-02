@@ -26,23 +26,23 @@ def coordinator_node(state: AgentState) -> Dict[str, Any]:
     logger.info(f"Coordinator Agent invoked. Current agent: {state.get('current_agent', 'unknown')}")
     query = state.get("query", "")
     image_path = state.get("image_path", "")
-    needs_image_context = bool(image_path) # If an image is provided
-    needs_text_context = state.get("requires_text_knowledge", False) # Planner might set this
-    needs_web_context = state.get("requires_web_search", False) # Planner might set this
-    needs_geo_context = state.get("requires_geo_data", False) # Planner might set this
+    needs_image_context = bool(image_path) 
+    needs_text_context = state.get("requires_text_knowledge", False) 
+    needs_web_context = state.get("requires_web_search", False) 
+    needs_geo_context = state.get("requires_geo_data", False) 
 
 
-    required_sources = state.get("required_sources", []) # Planner sets this list
-    completed_sources = state.get("completed_sources", []) # Track progress
+    required_sources = state.get("required_sources", [])
+    completed_sources = state.get("completed_sources", [])
 
     logger.debug(f"Coordinator: Required sources: {required_sources}, Completed sources: {completed_sources}")
 
-    next_agent = "reasoning_agent" # Default, assume all required sources are done
+    next_agent = "reasoning_agent" 
     for source in required_sources:
         if source not in completed_sources:
             if source == "vision":
                 next_agent = "vision_agent"
-                break # Go to the first incomplete source
+                break 
             elif source == "text":
                 next_agent = "text_retrieval_agent"
                 break
@@ -56,17 +56,17 @@ def coordinator_node(state: AgentState) -> Dict[str, Any]:
                 logger.warning(f"Coordinator: Unknown source type '{source}' in required_sources list.")
 
     if next_agent != "reasoning_agent":
-        updated_completed_sources = completed_sources + [next_agent.replace("_agent", "")] # e.g., "vision_agent" -> "vision"
+        updated_completed_sources = completed_sources + [next_agent.replace("_agent", "")] 
         updates = {
             "current_agent": "coordinator_agent",
             "completed_sources": updated_completed_sources,
-            "next_agent": next_agent # Set the next agent to the first uncompleted required source
+            "next_agent": next_agent 
         }
         logger.info(f"Coordinator: Scheduled next agent '{next_agent}' for source '{next_agent.replace('_agent', '')}'.")
     else:
         updates = {
             "current_agent": "coordinator_agent",
-            "next_agent": "reasoning_agent" # All sources gathered, go to reasoning
+            "next_agent": "reasoning_agent" 
         }
         logger.info("Coordinator: All required sources completed. Proceeding to reasoning_agent.")
 

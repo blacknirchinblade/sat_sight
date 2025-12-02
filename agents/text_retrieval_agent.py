@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 try:
     from sat_sight.retrieval.reranker import Reranker
-    RERANK_TOP_K = 5  # Increased from 3
+    RERANK_TOP_K = 5  
     text_reranker = Reranker(model_name="cross-encoder/ms-marco-MiniLM-L-6-v2")
     RERANKER_AVAILABLE = True
 except ImportError:
@@ -35,14 +35,14 @@ def text_retrieval_node(state: AgentState) -> Dict[str, Any]:
     """
     logger.info(f"Text Retrieval Agent invoked. Current agent: {state.get('current_agent', 'unknown')}")
     query = state.get("query", "")
-    multi_source_needed = state.get("multi_source_needed", False) # Check the flag set by Planner
+    multi_source_needed = state.get("multi_source_needed", False) 
 
     if not query:
         logger.error("Text Retrieval Agent: No query found in state.")
         return {
             "retrieved_text_chunks": [],
             "current_agent": "text_retrieval_agent",
-            "next_agent": state.get("next_agent", "reasoning_agent") # Default or use state's suggestion
+            "next_agent": state.get("next_agent", "reasoning_agent") 
         }
 
     try:
@@ -70,7 +70,7 @@ def text_retrieval_node(state: AgentState) -> Dict[str, Any]:
         
         if multi_source_needed and required_sources:
             completed_sources = state.get("completed_sources", [])
-            completed_sources.append("text")  # Mark text as completed
+            completed_sources.append("text")  
             
             remaining_sources = [s for s in required_sources if s not in completed_sources]
             
@@ -89,8 +89,8 @@ def text_retrieval_node(state: AgentState) -> Dict[str, Any]:
                     logger.info(f"Text Retrieval Agent: All sources complete, routing to reasoning_agent")
                     next_agent_decided = "reasoning_agent"
             else:
-                logger.info(f"Text Retrieval Agent: All required sources completed, routing to reasoning_agent")
-                next_agent_decided = "reasoning_agent"
+                logger.info(f"Text Retrieval Agent: All required sources completed, routing to memory_agent")
+                next_agent_decided = "memory_agent"
             
             updates = {
                 "current_agent": "text_retrieval_agent",
@@ -99,11 +99,11 @@ def text_retrieval_node(state: AgentState) -> Dict[str, Any]:
                 "next_agent": next_agent_decided
             }
         else:
-            logger.info(f"Text Retrieval Agent: Single source mode, routing to reasoning_agent")
+            logger.info(f"Text Retrieval Agent: Single source mode, routing to memory_agent")
             updates = {
                 "current_agent": "text_retrieval_agent",
                 "retrieved_text_chunks": reranked_results,
-                "next_agent": "reasoning_agent"
+                "next_agent": "memory_agent"
             }
 
         if DEBUG:

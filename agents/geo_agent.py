@@ -181,8 +181,7 @@ def geo_node(state: AgentState) -> Dict[str, Any]:
     
     return {
         "current_agent": "geo_agent",
-        "next_agent": "reasoning_agent",
+        "next_agent": "memory_agent",  # Route to memory before reasoning
         "geo_data": geo_data,
-        "retrieved_images": retrieved_images,
-        "next_agent": "reasoning_agent"
+        "retrieved_images": retrieved_images
     }

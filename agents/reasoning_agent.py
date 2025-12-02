@@ -20,6 +20,9 @@ def reasoning_node(state: AgentState) -> Dict[str, Any]:
     wiki_content = state.get("wiki_content", None)
     wiki_source = state.get("wiki_source", None)
     short_term_memory = state.get("short_term_memory", [])
+    memory_context = state.get("memory_context", "")  
+    memory_summary = state.get("memory_summary", {})  
+    episodic_memory = state.get("episodic_memory", [])  
     episode_id = state.get("episode_id", None)
     user_id = state.get("user_id", "anonymous")
 
@@ -30,13 +33,31 @@ def reasoning_node(state: AgentState) -> Dict[str, Any]:
     context_parts = []
     context_parts.append(f"USER QUERY: {query}")
 
-    if short_term_memory:
+    if memory_context:
+        context_parts.append("\n=== CONVERSATION HISTORY ===")
+        context_parts.append(memory_context)
+        context_parts.append("=== END HISTORY ===\n")
+        logger.info(f"Reasoning Agent: Using memory context from memory agent ({len(memory_context)} chars)")
+    elif short_term_memory:
         context_parts.append("\n=== CONVERSATION HISTORY ===")
         for i, turn in enumerate(short_term_memory[-6:]):
             role = turn.get("role", "unknown")
             content = turn.get("content", "")
             context_parts.append(f"{role.upper()}: {content}")
         context_parts.append("=== END HISTORY ===\n")
+    
+  
+    if episodic_memory:
+        context_parts.append("\n=== RELATED PAST CONVERSATIONS ===")
+        for i, episode in enumerate(episodic_memory[:2]):
+            past_query = episode.get("query", "")
+            past_response = episode.get("response", "")
+            if past_query and len(past_query) < 200:
+                context_parts.append(f"Similar Query: {past_query}")
+                if past_response and len(past_response) < 300:
+                    context_parts.append(f"Previous Answer: {past_response[:300]}...")
+        context_parts.append("=== END RELATED CONVERSATIONS ===\n")
+        logger.info(f"Reasoning Agent: Including {len(episodic_memory)} similar past episodes")
 
     if wiki_content:
         context_parts.append(f"\n=== WIKIPEDIA KNOWLEDGE ===\nSource: {wiki_source or 'Wikipedia'}\n{wiki_content}\n=== END WIKIPEDIA ===\n")

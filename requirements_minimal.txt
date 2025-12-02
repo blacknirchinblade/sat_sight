@@ -1,0 +1,54 @@
+# Core Dependencies
+torch>=2.0.0
+transformers>=4.30.0
+accelerate>=0.20.0
+
+# Vector Search & Embeddings
+faiss-gpu
+sentence-transformers>=2.0.0
+chromadb>=0.4.0
+
+# LangChain & LangGraph
+langchain>=0.1.0
+langchain-community>=0.0.20
+langgraph>=0.0.30
+langsmith>=0.1.0
+
+# LLM Providers
+groq>=0.4.0
+openai>=1.0.0
+llama-cpp-python>=0.2.0
+
+# NLP & Text Processing
+nltk>=3.8.0
+sentence-transformers>=2.2.0
+
+# Web Search & APIs
+duckduckgo-search>=4.0.0
+tavily-python  # Optional
+wikipedia-api>=0.6.0
+beautifulsoup4>=4.12.0
+
+# Image Processing
+pillow>=10.0.0
+clip  # OpenAI CLIP
+
+# UI
+streamlit>=1.30.0
+
+# Database
+sqlalchemy>=2.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+requests>=2.31.0
+pydantic>=2.0.0
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Logging & Monitoring
+loguru>=0.7.0
+
+# Optional: GPU Support
+# nvidia-cuda-runtime (if using CUDA)
+# nvidia-cudnn (if using cuDNN)

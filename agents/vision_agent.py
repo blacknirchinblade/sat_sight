@@ -42,8 +42,8 @@ def vision_node(state: AgentState) -> dict:
     """
     logger.info(f"Vision Agent invoked. Current agent: {state.get('current_agent', 'unknown')}")
     image_path = state.get("image_path", "")
-    query = state.get("query", "") # Get the original query to assess need for further sources
-    multi_source_needed = state.get("multi_source_needed", False) # Check the flag set by Planner
+    query = state.get("query", "") 
+    multi_source_needed = state.get("multi_source_needed", False) 
 
     is_text_search = not image_path and query
     
@@ -104,20 +104,20 @@ def vision_node(state: AgentState) -> dict:
 
         updates = {
             "current_agent": "vision_agent",
-            "image_embedding": image_embedding_np, # Store embedding if needed later
-            "retrieved_image_metadata": retrieved_metadata_list, # Use the final list (reranked or original)
-            "retrieved_image_distances": distances, # Store original FAISS distances
+            "image_embedding": image_embedding_np, 
+            "retrieved_image_metadata": retrieved_metadata_list, 
+            "retrieved_image_distances": distances, 
         }
 
-        query = state.get("query", "").lower() # Get query to check for web search hints
+        query = state.get("query", "").lower() 
         multi_source_needed = state.get("multi_source_needed", False)
 
-        next_agent_decided = "reasoning_agent"  # Default
+        next_agent_decided = "reasoning_agent"  
         required_sources = state.get("required_sources", [])
         
         if multi_source_needed and required_sources:
             completed_sources = state.get("completed_sources", [])
-            completed_sources.append("vision")  # Mark vision as completed
+            completed_sources.append("vision")  
             
             remaining_sources = [s for s in required_sources if s not in completed_sources]
             
@@ -169,7 +169,7 @@ def vision_node(state: AgentState) -> dict:
             "error_flag": True,
             "error_message": error_msg,
             "current_agent": "vision_agent",
-            "next_agent": "reasoning_agent" # Still try reasoning, maybe with an error note
+            "next_agent": "reasoning_agent" 
         }
     except Exception as e:
         logger.error(f"Error in Vision Agent: {e}")

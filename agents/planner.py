@@ -27,7 +27,7 @@ def classify_query(query: str, has_image: bool) -> Dict[str, Any]:
     if has_image_request:
         category = "image_search"
         confidence = 0.95
-    elif any(kw in query_lower for kw in ["latest", "recent", "news", "current", "today"]):
+    elif any(kw in query_lower for kw in web_keywords):
         category = "web_search"
         confidence = 0.95
     elif any(kw in query_lower for kw in location_keywords):

@@ -7,10 +7,10 @@ from sat_sight.core.config import DEBUG
 logger = logging.getLogger(__name__)
 
 try:
-    tavily_search_tool = TavilySearchTool(max_results=3) # Configure max results
+    tavily_search_tool = TavilySearchTool(max_results=3) 
 except ValueError as e:
     logger.error(f"Failed to initialize TavilySearchTool: {e}")
-    tavily_search_tool = None # Mark as unavailable if API key is missing
+    tavily_search_tool = None 
 
 def tavily_search_node(state: AgentState) -> Dict[str, Any]:
     """
@@ -32,7 +32,7 @@ def tavily_search_node(state: AgentState) -> Dict[str, Any]:
     if not query:
         logger.error("Tavily Search Agent: No query found in state.")
         return {
-            "web_snippets": [], # Use the correct key name from AgentState
+            "web_snippets": [], 
             "current_agent": "tavily_search_agent",
             "next_agent": state.get("next_agent", "reasoning_agent")
         }
@@ -42,7 +42,7 @@ def tavily_search_node(state: AgentState) -> Dict[str, Any]:
          return {
             "web_snippets": [], # Use the correct key name from AgentState
             "current_agent": "tavily_search_agent",
-            "next_agent": "reasoning_agent",
+            "next_agent": "memory_agent",  # Still route to memory even on error
             "error_flag": True,
             "error_message": "Tavily API client not initialized (check TAVILY_API_KEY)."
         }
@@ -56,7 +56,7 @@ def tavily_search_node(state: AgentState) -> Dict[str, Any]:
     updates = {
         "current_agent": "tavily_search_agent",
         "web_snippets": retrieved_snippets, # Use the correct key name from AgentState
-        "next_agent": "reasoning_agent"
+        "next_agent": "memory_agent"  # Route to memory before reasoning
     }
 
     if DEBUG:

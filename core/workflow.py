@@ -92,7 +92,7 @@ def create_workflow() -> StateGraph:
     workflow.add_conditional_edges(
         "wikipedia_agent",
         should_route_to_agent,
-        ["end", "text_retrieval_agent", "tavily_search_agent", "reasoning_agent"]
+        ["end", "text_retrieval_agent", "tavily_search_agent", "reasoning_agent", "memory_agent"]
     )
 
     workflow.add_conditional_edges(
